@@ -32,11 +32,40 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 var BACKEND_ENDPOINT = "http://165.22.251.57";
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       id: "",
+      form: {
+        name: "",
+        email: "",
+        password: ""
+      },
+      form2: {
+        email: "",
+        password: ""
+      },
       password: "",
       users: "",
       token: "",
@@ -56,8 +85,8 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
       var _this = this;
 
       axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/login"), {
-        email: "test@gmail.com",
-        password: "Test123"
+        email: this.form2.email,
+        password: this.form2.password
       }).then(function (res) {
         _this.user = res.data;
         localStorage.setItem("token", res.data.access_token);
@@ -65,10 +94,10 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
     },
     register: function register() {
       axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/register"), {
-        name: "Test",
-        email: "test@gmail.com",
-        password: "Test123",
-        password_confirmation: "Test123"
+        name: this.form.name,
+        email: this.form.email,
+        password: this.form.password,
+        password_confirmation: this.form.password
       }).then(function (res) {
         console.log(res);
       })["catch"](function (err) {
@@ -90,7 +119,7 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
     logout: function logout() {
       var config = {
         headers: {
-          'Authorization': "Bearer ".concat(localStorage.getItem("token"))
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       };
       axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/logout"), config).then(function (res) {
@@ -120,41 +149,197 @@ var render = function() {
   var _vm = this
   var _h = _vm.$createElement
   var _c = _vm._self._c || _h
-  return _c("div", [
-    _c("h1", { staticStyle: { color: "white !important" } }, [
-      _vm._v("Welcome to Laravel Ft. Vue.js")
-    ]),
-    _vm._v(" "),
-    _c("h1", { staticStyle: { color: "white !important" } }, [
-      _vm._v("Api Test")
-    ]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.login } }, [_vm._v("Login")]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.register } }, [_vm._v("Register")]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.userlist } }, [_vm._v("UserList")]),
-    _vm._v(" "),
-    _c("button", { on: { click: _vm.logout } }, [_vm._v("Logout")]),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("h1", { staticStyle: { color: "white !important" } }, [_vm._v("User")]),
-    _vm._v(" "),
-    _c("textarea", { domProps: { value: _vm.uData } }),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("br"),
-    _vm._v(" "),
-    _c("h1", { staticStyle: { color: "white !important" } }, [
-      _vm._v("Response")
-    ]),
-    _vm._v(" "),
-    _c("textarea", { domProps: { value: _vm.usData } })
-  ])
+  return _c(
+    "div",
+    { staticStyle: { color: "white !important", "text-align": "center" } },
+    [
+      _c("h1", { staticStyle: { color: "white !important" } }, [
+        _vm._v("Welcome to Laravel Ft. Vue.js")
+      ]),
+      _vm._v(" "),
+      _c("h1", { staticStyle: { color: "white !important" } }, [
+        _vm._v("Api Test")
+      ]),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticStyle: { border: "2px solid lightblue", "text-align": "center" }
+        },
+        [
+          _c("h1", { staticStyle: { color: "white !important" } }, [
+            _vm._v("Register")
+          ]),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "fname" } }, [_vm._v("Name:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.name,
+                expression: "form.name"
+              }
+            ],
+            attrs: { type: "text", name: "fname" },
+            domProps: { value: _vm.form.name },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "name", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "lname" } }, [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.email,
+                expression: "form.email"
+              }
+            ],
+            attrs: { type: "text", name: "lname" },
+            domProps: { value: _vm.form.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "email", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "lname" } }, [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form.password,
+                expression: "form.password"
+              }
+            ],
+            attrs: { type: "text", name: "lname" },
+            domProps: { value: _vm.form.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form, "password", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.register } }, [_vm._v("Register")]),
+          _vm._v(" "),
+          _c("br"),
+          _c("br")
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticStyle: { border: "2px solid lightblue", "text-align": "center" }
+        },
+        [
+          _c("h1", { staticStyle: { color: "white !important" } }, [
+            _vm._v("Login")
+          ]),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "fname" } }, [_vm._v("Email:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form2.email,
+                expression: "form2.email"
+              }
+            ],
+            attrs: { type: "text", name: "fname" },
+            domProps: { value: _vm.form2.email },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form2, "email", $event.target.value)
+              }
+            }
+          }),
+          _c("br"),
+          _vm._v(" "),
+          _c("label", { attrs: { for: "lname" } }, [_vm._v("Password:")]),
+          _vm._v(" "),
+          _c("input", {
+            directives: [
+              {
+                name: "model",
+                rawName: "v-model",
+                value: _vm.form2.password,
+                expression: "form2.password"
+              }
+            ],
+            attrs: { type: "text", name: "lname" },
+            domProps: { value: _vm.form2.password },
+            on: {
+              input: function($event) {
+                if ($event.target.composing) {
+                  return
+                }
+                _vm.$set(_vm.form2, "password", $event.target.value)
+              }
+            }
+          }),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.login } }, [_vm._v("Login")]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("textarea", { domProps: { value: _vm.uData } }),
+          _vm._v(" "),
+          _c("br")
+        ]
+      ),
+      _vm._v(" "),
+      _c(
+        "div",
+        {
+          staticStyle: { border: "2px solid lightblue", "text-align": "center" }
+        },
+        [
+          _c("h1", { staticStyle: { color: "white !important" } }, [
+            _vm._v("Response")
+          ]),
+          _vm._v(" "),
+          _c("button", { on: { click: _vm.userlist } }, [_vm._v("UserList")]),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("br"),
+          _vm._v(" "),
+          _c("textarea", { domProps: { value: _vm.usData } })
+        ]
+      )
+    ]
+  )
 }
 var staticRenderFns = []
 render._withStripped = true
