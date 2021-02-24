@@ -22,26 +22,67 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
       id: "",
-      password: ""
+      password: "",
+      users: "",
+      token: "",
+      user: ""
     };
+  },
+  computed: {
+    uData: function uData() {
+      return JSON.stringify(this.user);
+    },
+    usData: function usData() {
+      return JSON.stringify(this.users);
+    }
   },
   methods: {
     login: function login() {
       var _this = this;
 
-      axios.post("/api/auth/login").then(function (res) {
-        _this.res = JSON.stringify(res["data"]);
+      axios.post("http://127.0.0.1:8000/api/auth/login", {
+        email: "JohnDoe@gmail.com",
+        password: "JohnDoePassword"
+      }).then(function (res) {
+        _this.user = res.data;
+        localStorage.setItem("token", res.data.access_token);
       });
     },
     register: function register() {
+      axios.post("http://127.0.0.1:8000/api/auth/register", {
+        name: "oakfap",
+        email: "oakfap@gmail.com",
+        password: "oakfap",
+        password_confirmation: "oakfap"
+      }).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.log(err);
+      });
+    },
+    userlist: function userlist() {
       var _this2 = this;
 
-      axios.post("/api/auth/login").then(function (res) {
-        _this2.res = JSON.stringify(res["data"]);
+      var config = {
+        headers: {
+          Authorization: "Bearer ".concat(localStorage.getItem("token"))
+        }
+      };
+      axios.get("http://127.0.0.1:8000/api/auth/user-list", config).then(function (res) {
+        _this2.users = res.data;
       });
     }
   },
@@ -70,19 +111,33 @@ var render = function() {
       _vm._v("Welcome to Vue.js Ft. Laravel")
     ]),
     _vm._v(" "),
-    _c(
-      "button",
-      [_c("router-link", { attrs: { to: "/liff" } }, [_vm._v("To Test")])],
-      1
-    ),
-    _vm._v(" "),
-    _c("input", { attrs: { label: "login" } }),
-    _vm._v(" "),
     _c("h1", { staticStyle: { color: "white !important" } }, [
       _vm._v("Api Test")
     ]),
     _vm._v(" "),
-    _c("input", { domProps: { value: _vm.res } })
+    _c("button", { on: { click: _vm.login } }, [_vm._v("login")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.register } }, [_vm._v("register")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.userlist } }, [_vm._v("UserList")]),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("h1", { staticStyle: { color: "white !important" } }, [_vm._v("User")]),
+    _vm._v(" "),
+    _c("textarea", { domProps: { value: _vm.uData } }),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("br"),
+    _vm._v(" "),
+    _c("h1", { staticStyle: { color: "white !important" } }, [
+      _vm._v("Response")
+    ]),
+    _vm._v(" "),
+    _c("textarea", { domProps: { value: _vm.usData } })
   ])
 }
 var staticRenderFns = []

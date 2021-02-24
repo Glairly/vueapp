@@ -102,6 +102,10 @@ class AuthController extends Controller
         return response()->json(auth()->user());
     }
 
+
+    public function userList(){
+        return response()->json(User::all());
+    }
     /**
      * Get the token array structure.
      *
