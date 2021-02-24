@@ -25,6 +25,8 @@
     },
     "dependencies": {
         "@line/liff": "^2.6.0",
+        "chart.js": "^2.9.4",
+        "vue-chartjs": "^3.5.1",
         "vue-router": "^3.4.9"
     }
 }

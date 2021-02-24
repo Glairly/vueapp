@@ -30,14 +30,16 @@ Route::group([
     Route::get('/user-list', [AuthController::class, 'userList']);    
     Route::post('/objects', function (Request $request) {
         $data = $request->all()["data"];
-        $name = "";
-        $name = $data == 0  ?  "lemon" : "markers";
-        Objects::create(['name' => $name]);
-        return response()->json($name);
+        Objects::create(['name' => "lemon", 'amount' => $data]);
+        return response()->json($data);
     });
     Route::post('/conveyor', function (Request $request) {
         $data = $request->all()["data"];
         Conveyor::create(['status' => $data]);
+        return response()->json($data);
+    });
+    Route::get('/time-series', function () {
+        $data = App\Models\Objects::orderBy('id', 'desc')->take(7)->get();
         return response()->json($data);
     });
 });

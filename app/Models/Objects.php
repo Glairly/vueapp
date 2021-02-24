@@ -10,7 +10,7 @@ class Objects extends Model
     use HasFactory;
 
     protected $fillable = [
-        'name'
+        'name' , 'amount'
     ];
 }
 

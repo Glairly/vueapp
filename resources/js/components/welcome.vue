@@ -15,7 +15,7 @@
             <label for="lname">Password:</label>
             <input type="text" v-model="form.password" name="lname" /><br />
             <button @click="register">Register</button>
-            <br /><br>
+            <br /><br />
         </div>
 
         <div style="border:2px solid lightblue; text-align:center">
@@ -31,20 +31,31 @@
             <br />
         </div>
 
-        <div style="border:2px solid lightblue; text-align:center"> 
+        <div style="border:2px solid lightblue; text-align:center">
             <h1 style="color:white !important;">Response</h1>
             <button @click="userlist">UserList</button>
             <br />
             <br />
             <textarea :value="usData"></textarea>
         </div>
+        <div
+            style=" border:2px solid lightblue; text-align:center; width:800px;"
+        >
+            <h1 style="color:white !important;">Time Series</h1>
+            <button @click="getSeries">Update</button>
+            <line-chart :chartdata="chart.chartData" :options="chart.options" />
+        </div>
     </div>
 </template>
 
 <script>
-const BACKEND_ENDPOINT = "http://165.22.251.57";
+const BACKEND_ENDPOINT = "http://localhost:8000";
+import LineChart from "./lineChart.vue";
 
 export default {
+    components: {
+        LineChart
+    },
     data() {
         return {
             id: "",
@@ -60,15 +71,51 @@ export default {
             password: "",
             users: "",
             token: "",
-            user: ""
+            user: "",
+            chart: {
+                chartData: {
+                    labels: ["0s", "10s", "20s", "30s", "40s", "50s", "60s"],
+                    datasets: [
+                        {
+                            label: "",
+                            backgroundColor: "#f87979",
+                            data: [0, 0, 0, 0, 0, 0, 0]
+                        }
+                    ]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    legend: {
+                        fontColor: "white"
+                    },
+                    scales: {
+                        yAxes: [
+                            {
+                                ticks: {
+                                    fontColor: "white"
+                                }
+                            }
+                        ],
+                        xAxes: [
+                            {
+                                ticks: {
+                                    fontColor: "white"
+                                }
+                            }
+                        ]
+                    }
+                }
+            },
+            interval: ""
         };
     },
     computed: {
         uData() {
-            return JSON.stringify(this.user);
+            return JSON.stringify(localStorage.getItem("user"));
         },
         usData() {
-            return JSON.stringify(this.users);
+            return JSON.stringify(localStorage.getItem("users"));
         }
     },
     methods: {
@@ -79,7 +126,7 @@ export default {
                     password: this.form2.password
                 })
                 .then(res => {
-                    this.user = res.data;
+                    localStorage.setItem("user", res.data);
                     localStorage.setItem("token", res.data.access_token);
                 });
         },
@@ -107,7 +154,7 @@ export default {
             axios
                 .get(`${BACKEND_ENDPOINT}/api/auth/user-list`, config)
                 .then(res => {
-                    this.users = res.data;
+                    localStorage.setItem("users", res.data);
                 });
         },
         logout() {
@@ -124,8 +171,38 @@ export default {
                 .catch(err => {
                     console.log(err);
                 });
+        },
+        getSeries() {
+            let config = {
+                headers: {
+                    Authorization: `Bearer ${localStorage.getItem("token")}`
+                }
+            };
+            axios
+                .get(`${BACKEND_ENDPOINT}/api/auth/time-series`, config)
+                .then(res => {
+                    // console.log(res.data)
+                    let d = res.data.map(el => el.amount);
+                    this.chart.chartData.datasets = [
+                        {
+                            label: "",
+                            backgroundColor: "#f87979",
+                            data: d
+                        }
+                    ];
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
-    created() {}
+    created() {
+        this.interval = setInterval(() => {
+            this.getSeries();
+        }, 5000);
+    },
+    beforeDestroy() {
+        clearInterval(this.interval);
+    }
 };
 </script>
