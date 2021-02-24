@@ -13,7 +13,7 @@ class AddNumberToObjects extends Migration
      */
     public function up()
     {
-        Schema::table('Objects', function (Blueprint $table) {
+        Schema::table('objects', function (Blueprint $table) {
             //
             $table->integer('amount');
         });
@@ -26,7 +26,7 @@ class AddNumberToObjects extends Migration
      */
     public function down()
     {
-        Schema::table('Objects', function (Blueprint $table) {
+        Schema::table('objects', function (Blueprint $table) {
             //
         });
     }
