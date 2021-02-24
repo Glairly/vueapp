@@ -1,13 +1,14 @@
 <template>
     <div>
-        <h1 style="color:white !important;">Welcome to Vue.js Ft. Laravel</h1>
+        <h1 style="color:white !important;">Welcome to Laravel Ft. Vue.js</h1>
         <!-- <button>
             <router-link to="/liff">To Test</router-link>
         </button> -->
         <h1 style="color:white !important;">Api Test</h1>
-        <button @click="login">login</button>
-        <button @click="register">register</button>
+        <button @click="login">Login</button>
+        <button @click="register">Register</button>
         <button @click="userlist">UserList</button>
+        <button @click="logout">Logout</button>
 
         <br />
         <br />
@@ -21,6 +22,9 @@
 </template>
 
 <script>
+
+const BACKEND_ENDPOINT = "http://165.22.251.57";
+
 export default {
     data() {
         return {
@@ -42,9 +46,9 @@ export default {
     methods: {
         login() {
             axios
-                .post("http://165.22.251.57/api/auth/login", {
-                    email: "JohnDoe@gmail.com",
-                    password: "JohnDoePassword"
+                .post(`${BACKEND_ENDPOINT}/api/auth/login`, {
+                    email: "test@gmail.com",
+                    password: "Test123"
                 })
                 .then(res => {
                     this.user = res.data;
@@ -53,11 +57,11 @@ export default {
         },
         register() {
             axios
-                .post("http://165.22.251.57/api/auth/register", {
-                    name: "oakfap",
-                    email: "oakfap@gmail.com",
-                    password: "oakfap",
-                    password_confirmation: "oakfap"
+                .post(`${BACKEND_ENDPOINT}/api/auth/register`, {
+                    name: "Test",
+                    email: "test@gmail.com",
+                    password: "Test123",
+                    password_confirmation: "Test123"
                 })
                 .then(res => {
                     console.log(res);
@@ -73,10 +77,25 @@ export default {
                 }
             };
             axios
-                .get("http://165.22.251.57/api/auth/user-list", config)
+                .get(`${BACKEND_ENDPOINT}/api/auth/user-list`, config)
                 .then(res => {
                     this.users = res.data;
                 })
+        },
+        logout(){
+            let config = {
+                headers: {
+                    'Authorization' : `Bearer ${localStorage.getItem("token")}`
+                }
+            };
+            axios
+                .post(`${BACKEND_ENDPOINT}/api/auth/logout`,config)
+                .then(res => {
+                    console.log(res);
+                })
+                .catch(err => {
+                    console.log(err);
+                });
         }
     },
     created() {}

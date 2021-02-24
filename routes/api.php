@@ -3,6 +3,8 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+
+use App\Models\Objects;
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -24,4 +26,14 @@ Route::group([
     Route::post('/refresh', [AuthController::class, 'refresh']);
     Route::get('/user-profile', [AuthController::class, 'userProfile']);  
     Route::get('/user-list', [AuthController::class, 'userList']);    
+    Route::post('/objects', function (Request $request) {
+        $data = $request->all()["data"];
+        $name = "";
+        $name = $data == 0  ?  "lemon" : "markers";
+        Objects::create(['name' => $name]);
+        return response()->jsoN($name);
+    });
 });
+
+
+ 

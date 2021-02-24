@@ -31,6 +31,8 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
+//
+var BACKEND_ENDPOINT = "http://165.22.251.57";
 /* harmony default export */ __webpack_exports__["default"] = ({
   data: function data() {
     return {
@@ -53,20 +55,20 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      axios.post("http://165.22.251.57/api/auth/login", {
-        email: "JohnDoe@gmail.com",
-        password: "JohnDoePassword"
+      axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/login"), {
+        email: "test@gmail.com",
+        password: "Test123"
       }).then(function (res) {
         _this.user = res.data;
         localStorage.setItem("token", res.data.access_token);
       });
     },
     register: function register() {
-      axios.post("http://165.22.251.57/api/auth/register", {
-        name: "oakfap",
-        email: "oakfap@gmail.com",
-        password: "oakfap",
-        password_confirmation: "oakfap"
+      axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/register"), {
+        name: "Test",
+        email: "test@gmail.com",
+        password: "Test123",
+        password_confirmation: "Test123"
       }).then(function (res) {
         console.log(res);
       })["catch"](function (err) {
@@ -81,8 +83,20 @@ __webpack_require__.r(__webpack_exports__);
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       };
-      axios.get("http://165.22.251.57/api/auth/user-list", config).then(function (res) {
+      axios.get("".concat(BACKEND_ENDPOINT, "/api/auth/user-list"), config).then(function (res) {
         _this2.users = res.data;
+      });
+    },
+    logout: function logout() {
+      var config = {
+        headers: {
+          'Authorization': "Bearer ".concat(localStorage.getItem("token"))
+        }
+      };
+      axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/logout"), config).then(function (res) {
+        console.log(res);
+      })["catch"](function (err) {
+        console.log(err);
       });
     }
   },
@@ -108,18 +122,20 @@ var render = function() {
   var _c = _vm._self._c || _h
   return _c("div", [
     _c("h1", { staticStyle: { color: "white !important" } }, [
-      _vm._v("Welcome to Vue.js Ft. Laravel")
+      _vm._v("Welcome to Laravel Ft. Vue.js")
     ]),
     _vm._v(" "),
     _c("h1", { staticStyle: { color: "white !important" } }, [
       _vm._v("Api Test")
     ]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.login } }, [_vm._v("login")]),
+    _c("button", { on: { click: _vm.login } }, [_vm._v("Login")]),
     _vm._v(" "),
-    _c("button", { on: { click: _vm.register } }, [_vm._v("register")]),
+    _c("button", { on: { click: _vm.register } }, [_vm._v("Register")]),
     _vm._v(" "),
     _c("button", { on: { click: _vm.userlist } }, [_vm._v("UserList")]),
+    _vm._v(" "),
+    _c("button", { on: { click: _vm.logout } }, [_vm._v("Logout")]),
     _vm._v(" "),
     _c("br"),
     _vm._v(" "),
