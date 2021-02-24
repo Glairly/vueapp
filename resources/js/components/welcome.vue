@@ -13,7 +13,7 @@
             <label for="lname">Email:</label>
             <input type="text" v-model="form.email" name="lname" /><br />
             <label for="lname">Password:</label>
-            <input type="text" v-model="form.password" name="lname" /><br />
+            <input type="password" v-model="form.password" name="lname" /><br />
             <button @click="register">Register</button>
             <br /><br />
         </div>
@@ -23,7 +23,7 @@
             <label for="fname">Email:</label>
             <input type="text" v-model="form2.email" name="fname" /><br />
             <label for="lname">Password:</label>
-            <input type="text" v-model="form2.password" name="lname" />
+            <input type="password" v-model="form2.password" name="lname" />
             <br />
             <button @click="login">Login</button>
             <br />
@@ -112,10 +112,10 @@ export default {
     },
     computed: {
         uData() {
-            return JSON.stringify(localStorage.getItem("user"));
+            return this.user;
         },
         usData() {
-            return JSON.stringify(localStorage.getItem("users"));
+            return this.users;
         }
     },
     methods: {
@@ -126,8 +126,14 @@ export default {
                     password: this.form2.password
                 })
                 .then(res => {
-                    localStorage.setItem("user", res.data);
+                    this.user = JSON.stringify(res.data);
+                    localStorage.setItem("user", JSON.stringify(res.data));
                     localStorage.setItem("token", res.data.access_token);
+                    alert("เรียบร้อย");
+                })
+                .catch(err => {
+                    console.log(err);
+                    alert("ล้มเหลว");
                 });
         },
         register() {
@@ -140,9 +146,11 @@ export default {
                 })
                 .then(res => {
                     console.log(res);
+                    alert("เรียบร้อย");
                 })
                 .catch(err => {
                     console.log(err);
+                    alert("ล้มเหลว");
                 });
         },
         userlist() {
@@ -154,7 +162,8 @@ export default {
             axios
                 .get(`${BACKEND_ENDPOINT}/api/auth/user-list`, config)
                 .then(res => {
-                    localStorage.setItem("users", res.data);
+                    this.users = JSON.stringify(res.data);
+                    localStorage.setItem("users", JSON.stringify(res.data));
                 });
         },
         logout() {
@@ -200,6 +209,8 @@ export default {
         this.interval = setInterval(() => {
             this.getSeries();
         }, 5000);
+        this.user = JSON.stringify(JSON.parse(localStorage.getItem("user")));
+        this.users = JSON.stringify(JSON.parse(localStorage.getItem("users")));
     },
     beforeDestroy() {
         clearInterval(this.interval);

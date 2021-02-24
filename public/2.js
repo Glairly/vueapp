@@ -20,7 +20,6 @@ __webpack_require__.r(__webpack_exports__);
       handler: function handler(_o, _n) {
         // this._chart.destroy();
         this.renderChart(this.chartdata, this.options);
-        console.log("adsadas");
       }
     }
   },
@@ -147,20 +146,27 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
   },
   computed: {
     uData: function uData() {
-      return JSON.stringify(localStorage.getItem("user"));
+      return this.user;
     },
     usData: function usData() {
-      return JSON.stringify(localStorage.getItem("users"));
+      return this.users;
     }
   },
   methods: {
     login: function login() {
+      var _this = this;
+
       axios.post("".concat(BACKEND_ENDPOINT, "/api/auth/login"), {
         email: this.form2.email,
         password: this.form2.password
       }).then(function (res) {
-        localStorage.setItem("user", res.data);
+        _this.user = JSON.stringify(res.data);
+        localStorage.setItem("user", JSON.stringify(res.data));
         localStorage.setItem("token", res.data.access_token);
+        alert("เรียบร้อย");
+      })["catch"](function (err) {
+        console.log(err);
+        alert("ล้มเหลว");
       });
     },
     register: function register() {
@@ -171,18 +177,23 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
         password_confirmation: this.form.password
       }).then(function (res) {
         console.log(res);
+        alert("เรียบร้อย");
       })["catch"](function (err) {
         console.log(err);
+        alert("ล้มเหลว");
       });
     },
     userlist: function userlist() {
+      var _this2 = this;
+
       var config = {
         headers: {
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       };
       axios.get("".concat(BACKEND_ENDPOINT, "/api/auth/user-list"), config).then(function (res) {
-        localStorage.setItem("users", res.data);
+        _this2.users = JSON.stringify(res.data);
+        localStorage.setItem("users", JSON.stringify(res.data));
       });
     },
     logout: function logout() {
@@ -198,7 +209,7 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
       });
     },
     getSeries: function getSeries() {
-      var _this = this;
+      var _this3 = this;
 
       var config = {
         headers: {
@@ -210,7 +221,7 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
         var d = res.data.map(function (el) {
           return el.amount;
         });
-        _this.chart.chartData.datasets = [{
+        _this3.chart.chartData.datasets = [{
           label: "",
           backgroundColor: "#f87979",
           data: d
@@ -221,11 +232,13 @@ var BACKEND_ENDPOINT = "http://165.22.251.57";
     }
   },
   created: function created() {
-    var _this2 = this;
+    var _this4 = this;
 
     this.interval = setInterval(function () {
-      _this2.getSeries();
+      _this4.getSeries();
     }, 5000);
+    this.user = JSON.stringify(JSON.parse(localStorage.getItem("user")));
+    this.users = JSON.stringify(JSON.parse(localStorage.getItem("users")));
   },
   beforeDestroy: function beforeDestroy() {
     clearInterval(this.interval);
@@ -632,7 +645,7 @@ var render = function() {
                 expression: "form.password"
               }
             ],
-            attrs: { type: "text", name: "lname" },
+            attrs: { type: "password", name: "lname" },
             domProps: { value: _vm.form.password },
             on: {
               input: function($event) {
@@ -697,7 +710,7 @@ var render = function() {
                 expression: "form2.password"
               }
             ],
-            attrs: { type: "text", name: "lname" },
+            attrs: { type: "password", name: "lname" },
             domProps: { value: _vm.form2.password },
             on: {
               input: function($event) {

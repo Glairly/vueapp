@@ -10,7 +10,6 @@ export default {
             handler(_o, _n) {
                 // this._chart.destroy();
                 this.renderChart(this.chartdata, this.options);
-                console.log("adsadas");
             }
         }
     },
