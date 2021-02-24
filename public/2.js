@@ -91,7 +91,7 @@ __webpack_require__.r(__webpack_exports__);
 //
 //
 //
-var BACKEND_ENDPOINT = "http://localhost:8000";
+var BACKEND_ENDPOINT = "http://165.22.251.57";
 
 /* harmony default export */ __webpack_exports__["default"] = ({
   components: {

@@ -49,7 +49,7 @@
 </template>
 
 <script>
-const BACKEND_ENDPOINT = "http://localhost:8000";
+const BACKEND_ENDPOINT = "http://165.22.251.57";
 import LineChart from "./lineChart.vue";
 
 export default {
