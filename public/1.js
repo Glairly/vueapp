@@ -53,7 +53,7 @@ __webpack_require__.r(__webpack_exports__);
     login: function login() {
       var _this = this;
 
-      axios.post("http://127.0.0.1:8000/api/auth/login", {
+      axios.post("http://165.22.251.57/api/auth/login", {
         email: "JohnDoe@gmail.com",
         password: "JohnDoePassword"
       }).then(function (res) {
@@ -62,7 +62,7 @@ __webpack_require__.r(__webpack_exports__);
       });
     },
     register: function register() {
-      axios.post("http://127.0.0.1:8000/api/auth/register", {
+      axios.post("http://165.22.251.57/api/auth/register", {
         name: "oakfap",
         email: "oakfap@gmail.com",
         password: "oakfap",
@@ -81,7 +81,7 @@ __webpack_require__.r(__webpack_exports__);
           Authorization: "Bearer ".concat(localStorage.getItem("token"))
         }
       };
-      axios.get("http://127.0.0.1:8000/api/auth/user-list", config).then(function (res) {
+      axios.get("http://165.22.251.57/api/auth/user-list", config).then(function (res) {
         _this2.users = res.data;
       });
     }

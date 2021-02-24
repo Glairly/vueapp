@@ -42,7 +42,7 @@ export default {
     methods: {
         login() {
             axios
-                .post("http://127.0.0.1:8000/api/auth/login", {
+                .post("http://165.22.251.57/api/auth/login", {
                     email: "JohnDoe@gmail.com",
                     password: "JohnDoePassword"
                 })
@@ -53,7 +53,7 @@ export default {
         },
         register() {
             axios
-                .post("http://127.0.0.1:8000/api/auth/register", {
+                .post("http://165.22.251.57/api/auth/register", {
                     name: "oakfap",
                     email: "oakfap@gmail.com",
                     password: "oakfap",
@@ -73,7 +73,7 @@ export default {
                 }
             };
             axios
-                .get("http://127.0.0.1:8000/api/auth/user-list", config)
+                .get("http://165.22.251.57/api/auth/user-list", config)
                 .then(res => {
                     this.users = res.data;
                 })
