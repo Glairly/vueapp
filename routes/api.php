@@ -5,6 +5,8 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 
 use App\Models\Objects;
+use App\Models\Conveyor;
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -31,7 +33,12 @@ Route::group([
         $name = "";
         $name = $data == 0  ?  "lemon" : "markers";
         Objects::create(['name' => $name]);
-        return response()->jsoN($name);
+        return response()->json($name);
+    });
+    Route::post('/conveyor', function (Request $request) {
+        $data = $request->all()["data"];
+        Conveyor::create(['status' => $data]);
+        return response()->json($data);
     });
 });
 
